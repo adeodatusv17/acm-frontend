@@ -17,7 +17,7 @@ function Applicants() {
   useEffect(() => {
     const fetchApplicants = async () => {
       try {
-        const response = await axios.get('http://localhost:3001/applicant/getapplicant');
+        const response = await axios.get('https://ims-vert-kappa.vercel.app/applicant/getapplicant');
         setApplicants(response.data);
       } catch (error) {
         console.error('Error fetching applicants:', error);
@@ -30,7 +30,7 @@ function Applicants() {
   // Handle adding a new applicant
   const handleAddApplicant = async () => {
     try {
-      await axios.post('http://localhost:3001/applicant/addapplicant', newApplicant);
+      await axios.post('https://ims-vert-kappa.vercel.app/applicant/addapplicant', newApplicant);
       setApplicants([...applicants, newApplicant]);
       setNewApplicant({ uid: '', name: '', email: '', phone: '', role: '', interviewDone: false }); // Clear form
     } catch (error) {
@@ -51,7 +51,7 @@ function Applicants() {
   // Handle delete applicant
   const deleteApplicant = async (uid) => {
     try {
-      await axios.delete(`http://localhost:3001/applicant/delete/${uid}`);
+      await axios.delete(`https://ims-vert-kappa.vercel.app/applicant/delete/${uid}`);
       setApplicants(applicants.filter(applicant => applicant.uid !== uid)); 
     } catch (error) {
       console.error('Error deleting applicant:', error);
