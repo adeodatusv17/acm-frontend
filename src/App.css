@@ -84,19 +84,19 @@ h1, h2, h3 {
 table {
   width: 100%;
   border-collapse: collapse;
-  background-color: transparent; /* Transparent background */
-  box-shadow: none; /* Removes shadow */
+  background-color: transparent; 
+  box-shadow: none; 
 }
 
 th, td {
   text-align: left;
   padding: 1rem;
-  border-bottom: 1px solid rgba(255, 255, 255, 0.2); /* Semi-transparent white borders */
-  color: white; /* White text for table content */
+  border-bottom: 1px solid rgba(255, 255, 255, 0.2); 
+  color: white;
 }
 
 th {
-  background-color: rgba(255, 255, 255, 0.1); /* Semi-transparent header background */
+  background-color: rgba(255, 255, 255, 0.1); 
   font-weight: 500;
 }
 
