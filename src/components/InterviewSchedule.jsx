@@ -18,7 +18,7 @@ function Interviews() {
 
   const fetchInterviews = async () => {
     try {
-      const response = await axios.get('http://localhost:3001/interview/all');
+      const response = await axios.get('https://ims-vert-kappa.vercel.app/interview/all');
       setInterviews(response.data);
       setShowInterviews(true); 
     } catch (error) {
@@ -28,7 +28,7 @@ function Interviews() {
 
   const handleAddInterview = async () => {
     try {
-      await axios.post('http://localhost:3001/interview/add', newInterview);
+      await axios.post('https://ims-vert-kappa.vercel.app/interview/add', newInterview);
       setNewInterview({ applicantUid: '', date: '', time: '', location: '', interviewer: '' });
       fetchInterviews();
     } catch (error) {
@@ -38,7 +38,7 @@ function Interviews() {
 
   const fetchByUid = async () => {
     try {
-      const response = await axios.get(`http://localhost:3001/interview/${uid}`);
+      const response = await axios.get(`https://ims-vert-kappa.vercel.app/interview/${uid}`);
       setSpecificInterview(response.data); 
     } catch (error) {
       console.error('Error fetching interview by UID:', error);
