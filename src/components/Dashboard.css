@@ -19,20 +19,20 @@
   align-items: center;
   justify-content: center;
   height: 100vh;
-  background-color: #070202; /* Dark background for contrast */
+  background-color: #070202; 
 }
 
 .welcome-text {
   font-size: 3rem;
-  color: #1976d2; /* Bright color for emphasis */
+  color: #1976d2;
   animation: welcome-animation 1s ease-out forwards;
 }
 
 .dashboard h1 {
   font-size: 2.5rem;
   margin-bottom: 2rem;
-  font-weight: 100; /* Light weight for a clean look */
-  color: #ffffff; /* Ensure text stands out on darker backgrounds */
+  font-weight: 100; 
+  color: #ffffff;
 }
 
 .dashboard-content {
