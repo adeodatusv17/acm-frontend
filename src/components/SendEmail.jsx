@@ -18,7 +18,7 @@ function SendEmail() {
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      const response = await axios.post('http://localhost:3001/send-email', email);
+      const response = await axios.post('https://ims-vert-kappa.vercel.app/send-email', email);
       setStatus('Email sent successfully!');
     } catch (error) {
       console.error('Error sending email:', error);
