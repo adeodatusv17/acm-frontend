@@ -1,0 +1,79 @@
+.add-interview-form {
+  margin-bottom: 2rem;
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between; 
+  border-radius: 10px;
+  gap: 1rem;
+}
+
+.add-interview-form input {
+  padding: 0.5rem;
+  font-size: 1rem; 
+  border: 1px solid rgba(255,255,255,0.5);
+  background-color: transparent;
+  border-radius: 10px;
+  color: white;
+  flex: 1 1 150px; 
+}
+
+
+.add-interview-form input[type="time"] {
+  flex: 0 0 100px; 
+  color: white;
+}
+
+.add-interview-form input[type="text"] {
+  flex: 1 1 200px; 
+}
+
+.add-interview-form .btn {
+  padding: 0.5rem 1rem;
+  font-size: 1rem; 
+  cursor: pointer;
+  color:white;
+  border: 1px solid rgba(255,255,255,0.5);
+  border-radius: 10px;
+  background-color: transparent;
+}
+
+.table-container {
+  margin-top: 2rem;
+}
+
+.enter-uid-container {
+  display: flex;
+  align-items: center;
+  margin-left: auto; 
+}
+
+.enter-uid {
+  flex: 0 0 150px; 
+  margin-right: 10px;
+}
+
+.enter-uid-btn {
+  background-color: transparent;
+  margin-left: 10px;
+  margin-top: 20px;
+  padding: 0.5rem 1rem;
+  text-align: center;
+  text-transform: uppercase;
+  transition: 0.5s;
+  background-size: 200% auto;
+  color: white;            
+  /* box-shadow: 0 0 20px #eee; */
+  border-radius:10px;
+  display: block;
+  border: 1px solid rgba(255,255,255,0.5);
+}
+
+.enter-uid-btn:hover {
+  background-position: right center;
+  color: #fff;
+  background-color: rgba(255, 255, 255, 0.3);
+  text-decoration: none;
+  cursor: pointer;
+  transform:scale(1.05);
+}
