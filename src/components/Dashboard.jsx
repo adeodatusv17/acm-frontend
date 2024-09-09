@@ -8,19 +8,19 @@ function Dashboard() {
   const [adminCount, setAdminCount] = useState(0);
 
   useEffect(() => {
-    axios.get('https://ims-vert-kappa.vercel.app/admin/count')
+    axios.get('https:localhost:3001/admin/count')
       .then(response => setAdminCount(response.data.count))
       .catch(error => console.error('Error fetching admin count:', error));
   }, []);
 
   useEffect(() => {
-    axios.get('https://ims-vert-kappa.vercel.app/applicant/count')
+    axios.get('https:localhost:3001/applicant/count')
       .then(response => setApplicantCount(response.data.count))
       .catch(error => console.error('Error fetching applicant count:', error));
   }, []);
 
   useEffect(() => {
-    axios.get('https://ims-vert-kappa.vercel.app/interview/count')
+    axios.get('https:localhost:3001/interview/count')
       .then(response => setInterviewCount(response.data.count))
       .catch(error => console.error('Error fetching interview count:', error));
   }, []);
