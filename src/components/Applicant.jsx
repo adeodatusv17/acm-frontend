@@ -22,8 +22,8 @@ function Applicants() {
         // fetching interview status for each applicant
         const updatedApplicants = await Promise.all(applicantsData.map(async (applicant) => {
           try {
-            const statusResponse = await axios.get(`http://localhost:3001/interview/status/${applicant.uid}`);//used interview endpoint because 
-            return { ...applicant, done: statusResponse.data.done }                                       //interview doesnt have a done in schema
+            const statusResponse = await axios.get(`http://localhost:3001/interview/status/${applicant.uid}`);
+            return { ...applicant, done: statusResponse.data.done }      //interview doesnt have a 'done' in schema so spread adds the obj
           } catch (error) {
             console.error(`Error fetching status for applicant ${applicant.uid}:`, error);
             return { ...applicant, done: false };
@@ -57,7 +57,7 @@ function Applicants() {
     applicant.uid.toString().includes(searchId)
   );
 
-  const handleToggleInterviewDone = async (uid, currentStatus) => {
+  const handleToggleInterviewDone = async (uid, currentStatus) => {//handling toggling yes and no using endpoint in /interview
     try {
       const newStatus = !currentStatus;
       await axios.put(`http://localhost:3001/interview/update/${uid}`, { done: newStatus });
@@ -70,6 +70,7 @@ function Applicants() {
     }
   };
 
+  //renders
   return (
     <div className="applicants">
       <h1>Applicants</h1>
