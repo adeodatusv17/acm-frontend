@@ -9,42 +9,57 @@ function Interviews() {
     date: '',
     time: '',
     location: '',
-    interviewer: ''
+    interviewer: '',
+    done: false
   });
-  
+
   const [showInterviews, setShowInterviews] = useState(false); 
   const [uid, setUid] = useState(''); 
   const [specificInterview, setSpecificInterview] = useState(null); 
 
-  const fetchInterviews = async () => {
+  const fetchInterviews = async () => {//fetching all interviews
     try {
-      const response = await axios.get('https://ims-vert-kappa.vercel.app/interview/all');
+      const response = await axios.get('http://localhost:3001/interview/all');
       setInterviews(response.data);
       setShowInterviews(true); 
     } catch (error) {
       console.error('Error fetching interviews:', error);
+      alert('Error fetching interviews. Please try again.');
     }
   };
 
-  const handleAddInterview = async () => {
+  const handleAddInterview = async () => {//functionality to add interviews
     try {
-      await axios.post('https://ims-vert-kappa.vercel.app/interview/add', newInterview);
-      setNewInterview({ applicantUid: '', date: '', time: '', location: '', interviewer: '' });
+      await axios.post('http://localhost:3001/interview/add', newInterview);
+      setNewInterview({ applicantUid: '', date: '', time: '', location: '', interviewer: '', done: false });
       fetchInterviews();
     } catch (error) {
       console.error('Error adding interview:', error);
+      alert('Error adding interview. Please try again.');
     }
   };
 
   const fetchByUid = async () => {
     try {
-      const response = await axios.get(`https://ims-vert-kappa.vercel.app/interview/${uid}`);
+      const response = await axios.get(`http://localhost:3001/interview/${uid}`);
       setSpecificInterview(response.data); 
     } catch (error) {
       console.error('Error fetching interview by UID:', error);
+      alert('Error fetching interview by UID. Please try again.');
     }
   };
 
+  const handleToggleInterviewDone = async (applicantUid, currentStatus) => {//toggle function similar to used in applicant 
+    try {
+      await axios.put(`http://localhost:3001/interview/update/${applicantUid}`, { done: currentStatus });
+      fetchInterviews(); 
+    } catch (error) {
+      console.error('Error updating interview status:', error);
+      alert('Error updating interview status. Please try again.');
+    }
+  };
+
+  //renders
   return (
     <div className="interviews">
       <h1>Interview Schedule</h1>
@@ -83,16 +98,14 @@ function Interviews() {
           <button onClick={handleAddInterview} className="btn">Add Interview</button>
           <button onClick={fetchInterviews} className="btn">Get All Interviews</button>
           <div className='enter-uid'>
-          <input
-            type="text"
-            placeholder="Enter Applicant UID"
-            value={uid}
-            onChange={e => setUid(e.target.value)}
-            // style={{ marginLeft: '10px' }}
-          />
-          <button onClick={fetchByUid} className="enter-uid-btn">Get Interview by UID</button>
+            <input
+              type="text"
+              placeholder="Enter Applicant UID"
+              value={uid}
+              onChange={e => setUid(e.target.value)}
+            />
+            <button onClick={fetchByUid} className="enter-uid-btn">Get Interview by UID</button>
           </div>
-          
         </div>
       </div>
 
@@ -106,7 +119,6 @@ function Interviews() {
         </div>
       )}
 
-      {/* Show all interviews */}
       {showInterviews && interviews.length > 0 && (
         <table>
           <thead>
@@ -116,6 +128,8 @@ function Interviews() {
               <th>Date</th>
               <th>Time</th>
               <th>Location</th>
+              <th>Interview Done</th> 
+              <th>Action</th> 
             </tr>
           </thead>
           <tbody>
@@ -126,6 +140,15 @@ function Interviews() {
                 <td>{new Date(interview.date).toLocaleDateString()}</td>
                 <td>{interview.time}</td>
                 <td>{interview.location}</td>
+                <td>{interview.done ? 'Yes' : 'No'}</td>
+                <td>
+                  <div
+                    className={`toggle ${interview.done ? 'active' : ''}`}
+                    onClick={() => handleToggleInterviewDone(interview.applicantUid, !interview.done)}
+                  >
+                    <div className="ball"></div>
+                  </div>
+                </td>
               </tr>
             ))}
           </tbody>
