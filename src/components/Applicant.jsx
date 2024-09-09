@@ -10,51 +10,63 @@ function Applicants() {
     email: '',
     phone: '',
     role: '',
-    interviewDone: false,
+    done: false,
   });
 
-  // Fetch all applicants from the backend
   useEffect(() => {
     const fetchApplicants = async () => {
       try {
-        const response = await axios.get('https:localhost:3001/applicant/getapplicant');
-        setApplicants(response.data);
+        const response = await axios.get('http://localhost:3001/applicant/getapplicant');
+        const applicantsData = response.data;
+
+        // fetching interview status for each applicant
+        const updatedApplicants = await Promise.all(applicantsData.map(async (applicant) => {
+          try {
+            const statusResponse = await axios.get(`http://localhost:3001/interview/status/${applicant.uid}`);//used interview endpoint because 
+            return { ...applicant, done: statusResponse.data.done }                                       //interview doesnt have a done in schema
+          } catch (error) {
+            console.error(`Error fetching status for applicant ${applicant.uid}:`, error);
+            return { ...applicant, done: false };
+          }
+        }));
+
+        setApplicants(updatedApplicants);
       } catch (error) {
         console.error('Error fetching applicants:', error);
       }
     };
-    
+
     fetchApplicants();
   }, []);
 
-  // Handle adding a new applicant
   const handleAddApplicant = async () => {
     try {
-      await axios.post('https:localhost:3001/applicant/addapplicant', newApplicant);
+      await axios.post('http://localhost:3001/applicant/addapplicant', newApplicant);
       setApplicants([...applicants, newApplicant]);
-      setNewApplicant({ uid: '', name: '', email: '', phone: '', role: '', interviewDone: false }); // Clear form
+      setNewApplicant({ uid: '', name: '', email: '', phone: '', role: '', done: false }); 
     } catch (error) {
       console.error('Error adding applicant:', error);
     }
   };
 
-  // Handle search input change
   const handleSearchChange = (e) => {
     setSearchId(e.target.value);
   };
 
-  // Filter applicants based on searchId
   const filteredApplicants = applicants.filter(applicant =>
     applicant.uid.toString().includes(searchId)
   );
 
-  // Handle delete applicant
-  const deleteApplicant = async (uid) => {
+  const handleToggleInterviewDone = async (uid, currentStatus) => {
     try {
-      await axios.delete(`https:localhost:3001/applicant/delete/${uid}`);
-      setApplicants(applicants.filter(applicant => applicant.uid !== uid)); 
+      const newStatus = !currentStatus;
+      await axios.put(`http://localhost:3001/interview/update/${uid}`, { done: newStatus });
+      const updatedApplicants = applicants.map(applicant =>
+        applicant.uid === uid ? { ...applicant, done: newStatus } : applicant
+      );
+      setApplicants(updatedApplicants);
     } catch (error) {
-      console.error('Error deleting applicant:', error);
+      console.error('Error toggling interview status:', error);
     }
   };
 
@@ -110,16 +122,7 @@ function Applicants() {
           value={newApplicant.role}
           onChange={(e) => setNewApplicant({ ...newApplicant, role: e.target.value })}
         />
-        <div>
-          <label>
-            Interview Done:
-            <input
-              type="checkbox"
-              checked={newApplicant.interviewDone}
-              onChange={(e) => setNewApplicant({ ...newApplicant, interviewDone: e.target.checked })}
-            />
-          </label>
-        </div>
+       
         <button className="btn" onClick={handleAddApplicant}>Add Applicant</button>
       </div>
 
@@ -143,11 +146,14 @@ function Applicants() {
               <td>{applicant.email}</td>
               <td>{applicant.phone}</td>
               <td>{applicant.role}</td>
-              <td>{applicant.interviewDone ? 'Yes' : 'No'}</td>
+              <td>{applicant.done ? 'Yes' : 'No'}</td>
               <td>
-                <button onClick={() => deleteApplicant(applicant.uid)} style={{cursor:'pointer'}}>
-                  <img src="/delete.png" alt="del" style={{ width: '10px', height: '10px' }} />
-                </button>
+                <div
+                  className={`toggle ${applicant.done ? 'active' : ''}`}
+                  onClick={() => handleToggleInterviewDone(applicant.uid, applicant.done)}
+                >
+                  <div className="ball"></div>
+                </div>
               </td>
             </tr>
           ))}
