@@ -16,7 +16,7 @@ function Admin() {
   //  fetch admins
   const fetchAdmins = async () => {
     try {
-      const response = await axios.get('https://ims-vert-kappa.vercel.app/admin/admins');
+      const response = await axios.get('https:localhost:3001/admin/admins');
       setAdmins(response.data);
     } catch (error) {
       console.error('Error fetching admins:', error);
@@ -26,7 +26,7 @@ function Admin() {
   //  fetch interviews
   const fetchInterviews = async () => {
     try {
-      const response = await axios.get('https://ims-vert-kappa.vercel.app/interview/all');
+      const response = await axios.get('https:localhost:3001/interview/all');
       setInterviews(response.data);
     } catch (error) {
       console.error('Error fetching interviews:', error);
@@ -36,7 +36,7 @@ function Admin() {
   //  add a new admin
   const handleAddAdmin = async () => {
     try {
-      const response = await axios.post('https://ims-vert-kappa.vercel.app/admin/register', { username });
+      const response = await axios.post('https:localhost:3001/admin/register', { username });
       console.log(response.data);
       setUsername('');
       fetchAdmins(); // Refresh the list after adding
@@ -48,7 +48,7 @@ function Admin() {
   // delete an admin
   const handleDeleteAdmin = async (username) => {
     try {
-      await axios.delete(`https://ims-vert-kappa.vercel.app/admin/delete/${username}`);
+      await axios.delete(`https:localhost:3001/admin/delete/${username}`);
       fetchAdmins(); 
     } catch (error) {
       console.error('Error deleting admin:', error);
