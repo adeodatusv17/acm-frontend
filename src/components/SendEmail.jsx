@@ -12,17 +12,30 @@ function SendEmail() {
 
   const handleChange = (e) => {
     const { name, value } = e.target;
-    setEmail({ ...email, [name]: value }); 
+    setEmail({ ...email, [name]: value });
   };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      const response = await axios.post('https://ims-vert-kappa.vercel.app/send-email', email);
+      await axios.post('http://localhost:3001/send-email', email);
       setStatus('Email sent successfully!');
     } catch (error) {
       console.error('Error sending email:', error);
       setStatus('Failed to send email.');
+    }
+  };
+
+  const handleSendToRemaining = async () => {
+    try {
+      const response = await axios.post('http://localhost:3001/send-email-to-remaining', {
+        subject: email.subject,
+        message: email.message,
+      });
+      setStatus('Emails sent to remaining applicants!');
+    } catch (error) {
+      console.error('Error sending emails to remaining applicants:', error);
+      setStatus('Failed to send emails to remaining applicants.');
     }
   };
 
@@ -38,7 +51,7 @@ function SendEmail() {
             name="to"
             value={email.to}
             onChange={handleChange}
-            required
+            placeholder="Enter a single recipient email"
           />
         </div>
         <div>
@@ -62,8 +75,18 @@ function SendEmail() {
             required
           />
         </div>
+
         <button type="submit" className="btn">Send Email</button>
       </form>
+
+      <div style={{ margin: '20px 0', textAlign: 'center' }}>
+        <strong>OR</strong>
+      </div>
+   
+      <button onClick={handleSendToRemaining} className="btn">//automatic sending
+        Send to All Remaining Applicants
+      </button>
+
       {status && <p>{status}</p>}
     </div>
   );
