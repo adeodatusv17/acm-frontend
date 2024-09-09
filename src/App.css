@@ -84,19 +84,19 @@ h1, h2, h3 {
 table {
   width: 100%;
   border-collapse: collapse;
-  background-color: transparent; 
-  box-shadow: none; 
+  background-color: transparent; /* Transparent background */
+  box-shadow: none; /* Removes shadow */
 }
 
 th, td {
   text-align: left;
   padding: 1rem;
-  border-bottom: 1px solid rgba(255, 255, 255, 0.2); 
-  color: white;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.2); /* Semi-transparent white borders */
+  color: white; /* White text for table content */
 }
 
 th {
-  background-color: rgba(255, 255, 255, 0.1); 
+  background-color: rgba(255, 255, 255, 0.1); /* Semi-transparent header background */
   font-weight: 500;
 }
 
@@ -244,5 +244,38 @@ tr:hover {
   width: 100%;
   box-sizing: border-box;
 
+}
+
+.toggle {
+  width: 60px;
+  height: 30px;
+  background-color: #ccc;
+  border-radius: 15px;
+  position: relative;
+  cursor: pointer;
+  transition: background-color 0.3s;
+}
+
+.toggle.active {
+  background-color: #4CAF50; 
+}
+
+.ball {
+  width: 28px;
+  height: 28px;
+  background-color: white;
+  border-radius: 50%;
+  position: absolute;
+  top: 1px;
+  left: 1px;
+  transition: transform 0.3s;
+}
+
+.toggle.active .ball {
+  transform: translateX(30px); 
+}
+
+.toggle:hover .ball {
+  transform: scale(1.1);
 }
 
