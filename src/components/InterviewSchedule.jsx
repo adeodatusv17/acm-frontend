@@ -19,7 +19,7 @@ function Interviews() {
 
   const fetchInterviews = async () => {//fetching all interviews
     try {
-      const response = await axios.get('http://localhost:3001/interview/all');
+      const response = await axios.get('https://induction-blond.vercel.app/interview/all');
       setInterviews(response.data);
       setShowInterviews(true); 
     } catch (error) {
@@ -30,7 +30,7 @@ function Interviews() {
 
   const handleAddInterview = async () => {//functionality to add interviews
     try {
-      await axios.post('http://localhost:3001/interview/add', newInterview);
+      await axios.post('https://induction-blond.vercel.app/interview/add', newInterview);
       setNewInterview({ applicantUid: '', date: '', time: '', location: '', interviewer: '', done: false });
       fetchInterviews();
     } catch (error) {
@@ -41,7 +41,7 @@ function Interviews() {
 
   const fetchByUid = async () => {
     try {
-      const response = await axios.get(`http://localhost:3001/interview/${uid}`);
+      const response = await axios.get(`https://induction-blond.vercel.app/interview/${uid}`);
       setSpecificInterview(response.data); 
     } catch (error) {
       console.error('Error fetching interview by UID:', error);
@@ -51,7 +51,7 @@ function Interviews() {
 
   const handleToggleInterviewDone = async (applicantUid, currentStatus) => {//toggle function similar to used in applicant 
     try {
-      await axios.put(`http://localhost:3001/interview/update/${applicantUid}`, { done: currentStatus });
+      await axios.put(`https://induction-blond.vercel.app/interview/update/${applicantUid}`, { done: currentStatus });
       fetchInterviews(); 
     } catch (error) {
       console.error('Error updating interview status:', error);
