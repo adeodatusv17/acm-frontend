@@ -18,7 +18,7 @@ function SendEmail() {
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      await axios.post('http://localhost:3001/send-email', email);
+      await axios.post('https://m4u-snowy.vercel.app/send-email', email);
       setStatus('Email sent successfully!');
     } catch (error) {
       console.error('Error sending email:', error);
@@ -28,7 +28,7 @@ function SendEmail() {
 
   const handleSendToRemaining = async () => {
     try {
-      const response = await axios.post('http://localhost:3001/send-email-to-remaining', {
+      const response = await axios.post('https://m4u-snowy.vercel.app/send-email-to-remaining', {
         subject: email.subject,
         message: email.message,
       });
