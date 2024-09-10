@@ -8,19 +8,19 @@ function Dashboard() {
   const [adminCount, setAdminCount] = useState(0);
 
   useEffect(() => {
-    axios.get('https://induction-blond.vercel.app/admin/count')
+    axios.get('https://m4u-snowy.vercel.app/admin/count')
       .then(response => setAdminCount(response.data.count))
       .catch(error => console.error('Error fetching admin count:', error));
   }, []);
 
   useEffect(() => {
-    axios.get('https://induction-blond.vercel.app/applicant/count')
+    axios.get('https://m4u-snowy.vercel.app/applicant/count')
       .then(response => setApplicantCount(response.data.count))
       .catch(error => console.error('Error fetching applicant count:', error));
   }, []);
 
   useEffect(() => {
-    axios.get('https://induction-blond.vercel.app/interview/count')
+    axios.get('https://m4u-snowy.vercel.app/interview/count')
       .then(response => setInterviewCount(response.data.count))
       .catch(error => console.error('Error fetching interview count:', error));
   }, []);
