@@ -16,7 +16,7 @@ function Admin() {
   //  fetch admins
   const fetchAdmins = async () => {
     try {
-      const response = await axios.get('https://induction-blond.vercel.app//admin/admins');
+      const response = await axios.get('https://induction-blond.vercel.app/admin/admins');
       setAdmins(response.data);
     } catch (error) {
       console.error('Error fetching admins:', error);
