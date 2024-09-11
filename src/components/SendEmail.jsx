@@ -82,8 +82,9 @@ function SendEmail() {
       <div style={{ margin: '20px 0', textAlign: 'center' }}>
         <strong>OR</strong>
       </div>
-   
-      <button onClick={handleSendToRemaining} className="btn">//automatic sending
+
+      
+      <button onClick={handleSendToRemaining} className="btn"> 
         Send to All Remaining Applicants
       </button>
 
