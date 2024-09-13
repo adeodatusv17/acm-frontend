@@ -39,7 +39,7 @@ I used **React.js** for the frontend, **Express** for the backend, and **MongoDB
 - **Backend**: Express.js
 - **Database**: MongoDB
 - **Styling**: Custom CSS with global styles
-- **Email Service**: Node.js email module for sending reminders
-- **Deployment**: [Add details about deployment if applicable]
+- **Email Service**: Nodemailer with google smtp
+- **Deployment**: Using Vercel 
 
 
