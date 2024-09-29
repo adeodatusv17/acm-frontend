@@ -17,9 +17,9 @@ function Interviews() {
   const [uid, setUid] = useState(''); 
   const [specificInterview, setSpecificInterview] = useState(null); 
 
-  const fetchInterviews = async () => {//fetching all interviews
+  const fetchInterviews = async () => {
     try {
-      const response = await axios.get('https://m4u-snowy.vercel.app/interview/all');
+      const response = await axios.get('http://localhost:3001/interview/all');
       setInterviews(response.data);
       setShowInterviews(true); 
     } catch (error) {
@@ -28,9 +28,9 @@ function Interviews() {
     }
   };
 
-  const handleAddInterview = async () => {//functionality to add interviews
+  const handleAddInterview = async () => {
     try {
-      await axios.post('https://m4u-snowy.vercel.app/interview/add', newInterview);
+      await axios.post('http://localhost:3001/interview/add', newInterview);
       setNewInterview({ applicantUid: '', date: '', time: '', location: '', interviewer: '', done: false });
       fetchInterviews();
     } catch (error) {
@@ -41,7 +41,7 @@ function Interviews() {
 
   const fetchByUid = async () => {
     try {
-      const response = await axios.get(`https://m4u-snowy.vercel.app/interview/${uid}`);
+      const response = await axios.get(`http://localhost:3001/interview/${uid}`);
       setSpecificInterview(response.data); 
     } catch (error) {
       console.error('Error fetching interview by UID:', error);
@@ -49,9 +49,9 @@ function Interviews() {
     }
   };
 
-  const handleToggleInterviewDone = async (applicantUid, currentStatus) => {//toggle function similar to used in applicant 
+  const handleToggleInterviewDone = async (applicantUid, currentStatus) => {
     try {
-      await axios.put(`https://m4u-snowy.vercel.app/interview/update/${applicantUid}`, { done: currentStatus });
+      await axios.put(`http://localhost:3001/interview/update/${applicantUid}`, { done: currentStatus });
       fetchInterviews(); 
     } catch (error) {
       console.error('Error updating interview status:', error);
@@ -59,7 +59,6 @@ function Interviews() {
     }
   };
 
-  //renders
   return (
     <div className="interviews">
       <h1>Interview Schedule</h1>
@@ -120,42 +119,62 @@ function Interviews() {
       )}
 
       {showInterviews && interviews.length > 0 && (
-        <table>
-          <thead>
-            <tr>
-              <th>Applicant UID</th>
-              <th>Interviewer</th>
-              <th>Date</th>
-              <th>Time</th>
-              <th>Location</th>
-              <th>Interview Done</th> 
-              <th>Action</th> 
-            </tr>
-          </thead>
-          <tbody>
-            {interviews.map((interview, index) => (
-              <tr key={index}>
-                <td>{interview.applicantUid}</td>
-                <td>{interview.interviewer}</td>
-                <td>{new Date(interview.date).toLocaleDateString()}</td>
-                <td>{interview.time}</td>
-                <td>{interview.location}</td>
-                <td>{interview.done ? 'Yes' : 'No'}</td>
-                <td>
-                  <div
-                    className={`toggle ${interview.done ? 'active' : ''}`}
-                    onClick={() => handleToggleInterviewDone(interview.applicantUid, !interview.done)}
-                  >
-                    <div className="ball"></div>
-                  </div>
-                </td>
+        <>
+          <h2>All Interviews</h2>
+          <table>
+            <thead>
+              <tr>
+                <th>Applicant UID</th>
+                <th>Interviewer</th>
+                <th>Date</th>
+                <th>Time</th>
+                <th>Location</th>
+                <th>Interview Done</th>
               </tr>
-            ))}
-          </tbody>
-        </table>
-      )}
+            </thead>
+            <tbody>
+              {interviews.map(interview => (
+                <tr key={interview.applicantUid}>
+                  <td>{interview.applicantUid}</td>
+                  <td>{interview.interviewer}</td>
+                  <td>{new Date(interview.date).toLocaleDateString()}</td>
+                  <td>{interview.time}</td>
+                  <td>{interview.location}</td>
+                  <td>
+                    <div className="toggle-container">
+                      <div
+                        className={`toggle ${interview.done ? 'active' : ''}`}
+                        onClick={() => handleToggleInterviewDone(interview.applicantUid, !interview.done)}
+                      >
+                        <div className="ball"></div>
+                      </div>
+                    </div>
+                  </td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
 
-      {showInterviews && interviews.length === 0 && <p>No interviews available.</p>}
+          {/* Separate table for Interview Done status */}
+          <h2>Interview Done Status</h2>
+          <table>
+            <thead>
+              <tr>
+                <th>Applicant UID</th>
+                <th>Done</th>
+              </tr>
+            </thead>
+            <tbody>
+              {interviews.map(interview => (
+                <tr key={interview.applicantUid}>
+                  <td>{interview.applicantUid}</td>
+                  <td>{interview.done ? 'Yes' : 'No'}</td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        </>
+      )}
     </div>
   );
 }
