@@ -78,7 +78,6 @@ function SendEmail() {
             name="completionStatus"
             value={email.completionStatus}
             onChange={handleChange}
-            
           >
             <option value="">All</option>
             <option value="true">Completed</option>
