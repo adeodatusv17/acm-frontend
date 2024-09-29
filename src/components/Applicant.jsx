@@ -11,22 +11,27 @@ function Applicants() {
     phone: '',
     role: '',
     done: false,
+    interviewScheduled: false, // Track if interview is scheduled
   });
 
   useEffect(() => {
     const fetchApplicants = async () => {
       try {
-        const response = await axios.get('https://m4u-snowy.vercel.app/applicant/getapplicant');
+        const response = await axios.get('http://localhost:3001/applicant/getapplicant');
         const applicantsData = response.data;
 
-        // fetching interview status for each applicant
+        // Fetching interview status and if an interview is scheduled for each applicant
         const updatedApplicants = await Promise.all(applicantsData.map(async (applicant) => {
           try {
-            const statusResponse = await axios.get(`https://m4u-snowy.vercel.app/interview/status/${applicant.uid}`);
-            return { ...applicant, done: statusResponse.data.done }      //interview doesnt have a 'done' in schema so spread adds the obj
+            const statusResponse = await axios.get(`http://localhost:3001/interview/status/${applicant.uid}`);
+            return { 
+              ...applicant, 
+              done: statusResponse.data.done,  // Done status
+              interviewScheduled: statusResponse.data.interviewScheduled // Track if interview is scheduled
+            };
           } catch (error) {
             console.error(`Error fetching status for applicant ${applicant.uid}:`, error);
-            return { ...applicant, done: false };
+            return { ...applicant, done: false, interviewScheduled: false };
           }
         }));
 
@@ -41,9 +46,9 @@ function Applicants() {
 
   const handleAddApplicant = async () => {
     try {
-      await axios.post('https://m4u-snowy.vercel.app/applicant/addapplicant', newApplicant);
+      await axios.post('http://localhost:3001/applicant/addapplicant', newApplicant);
       setApplicants([...applicants, newApplicant]);
-      setNewApplicant({ uid: '', name: '', email: '', phone: '', role: '', done: false }); 
+      setNewApplicant({ uid: '', name: '', email: '', phone: '', role: '', done: false, interviewScheduled: false }); 
     } catch (error) {
       console.error('Error adding applicant:', error);
     }
@@ -57,10 +62,10 @@ function Applicants() {
     applicant.uid.toString().includes(searchId)
   );
 
-  const handleToggleInterviewDone = async (uid, currentStatus) => {//handling toggling yes and no using endpoint in /interview
+  const handleToggleInterviewDone = async (uid, currentStatus) => {
     try {
       const newStatus = !currentStatus;
-      await axios.put(`https://m4u-snowy.vercel.app/interview/update/${uid}`, { done: newStatus });
+      await axios.put(`http://localhost:3001/interview/update/${uid}`, { done: newStatus });
       const updatedApplicants = applicants.map(applicant =>
         applicant.uid === uid ? { ...applicant, done: newStatus } : applicant
       );
@@ -70,7 +75,6 @@ function Applicants() {
     }
   };
 
-  //renders
   return (
     <div className="applicants">
       <h1>Applicants</h1>
@@ -152,6 +156,8 @@ function Applicants() {
                 <div
                   className={`toggle ${applicant.done ? 'active' : ''}`}
                   onClick={() => handleToggleInterviewDone(applicant.uid, applicant.done)}
+                  style={{ cursor: applicant.interviewScheduled ? 'pointer' : 'pointer' }}
+                  
                 >
                   <div className="ball"></div>
                 </div>
